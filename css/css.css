@@ -10,11 +10,12 @@ html {
 
 body {
   height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
 	max-width: 500px;
-	min-width: 250px;
+	min-width: 270px;
 	width: 80%;
 	margin: 90px auto;
 	border: 20px solid black;
@@ -72,6 +73,10 @@ body {
     bottom: -1px;
 }
 
+.play-buttons:hover {
+	cursor: pointer;
+}
+
 .criss {
 	height: 102%;
 	width: 20px;
@@ -99,13 +104,13 @@ body {
 	position: absolute;
 	top: 19%;
 	left: 19%;
+	text-align: center;
 }
 
-p {
+.signature {
 	text-align: center;
-	margin-top: 20%;
+	margin-top: 15%;
 	margin-bottom: 0;
-	font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -113,4 +118,177 @@ h1 {
 	font-size: 40px;
 	font-family: Audiowide, serif;
 	margin-top: -5px;
+}
+
+.button-align {
+	margin-top: 8px;
+	position: relative;
+}
+
+.display {
+	width: 86px;
+	height: 86px;
+	border: 1px solid grey;
+	border-radius: 5px;
+	background-color: black;
+	position: absolute;
+	left: 19%;
+}
+
+.score {
+	color: red;
+	margin-top: 20%;
+	font-size: 42px;
+	font-family: 'Share Tech Mono', monospace;
+}
+
+.buttons {
+	display: inline-block;
+	width: 25%;
+	position: absolute;
+	right: 19%;
+}
+
+.buttons p {
+	padding: 5px;
+	border: 1px solid black;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	font-size: 12px;
+}
+
+.buttons p:hover {
+	cursor: pointer;
+}
+
+.strict {
+	background-color: #9A1922;
+	color: white;
+}
+
+@media screen and (max-width: 562px) {
+	.display {
+		width: 74px;
+		height: 74px;
+	}
+
+	.score {
+		margin-top: 20%;
+		font-size: 36px;
+	}
+
+	.buttons p {
+		padding: 3px;
+	}
+}
+
+@media screen and (max-width: 528px) {
+	.display {
+		width: 68px;
+		height: 68px;
+		left: 20%;
+	}
+
+	.score {
+		margin-top: 28%;
+		font-size: 26px;
+	}
+
+	.buttons {
+		right: 20%;
+	}
+
+	.buttons p {
+		padding: 2px;
+	}
+}
+
+@media screen and (max-width: 470px) {
+	.container {
+		border-width: 10px;
+	}
+
+	.criss {
+		width: 8px;
+		left: 49.5%;
+	}
+
+	.cross {
+		height: 8px;
+		top: 49.5%;
+	}
+
+	.console {
+		border-width: 5px;
+		width: 60%;
+		height: 60%;
+	}
+
+	.display {
+		width: 62px;
+		height: 62px;
+		left: 20%;
+	}
+
+	.score {
+		margin-top: 24%;
+		font-size: 26px;
+	}
+
+	.buttons {
+		right: 20%;
+	}
+
+	.buttons p {
+		padding: 1px;
+	}
+}
+
+@media screen and (max-width: 415px) {
+	.button-align {
+		margin-top: 0;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.display {
+		width: 62px;
+		height: 62px;
+		left: 18%;
+	}
+
+	.buttons {
+		right: 18%;
+	}
+}
+
+@media screen and (max-width: 370px) {
+	.signature {
+		margin-top: 10%;
+	}
+}
+
+@media screen and (max-width: 355px) {
+	.signature {
+		margin-top: 13%;
+	}
+
+	h1 {
+		margin-top: -8px;
+		font-size: 36px;
+	}
+
+	.display {
+		width: 54px;
+		height: 54px;
+		left: 18%;
+	}
+
+	.score {
+		margin-top: 20%;
+	}
+
+	.buttons p {
+		font-size: 10px;
+	}
 }
