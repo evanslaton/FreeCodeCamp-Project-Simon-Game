@@ -139,14 +139,14 @@ document.addEventListener("DOMContentLoaded", function() {
 				playSound(soundUrlArr[gameOrderArr[i]]);
 				setTimeout(() => {
 					btnArr[gameOrderArr[i]].setAttribute('style', `background-color: ${btnOrigColorArr[gameOrderArr[i]]};`);
-				}, 800);
-			}, 1000 * i);
+				}, 500);
+			}, 700 * i);
 		} else {
 			btnArr[i].setAttribute('style', `background-color: ${btnChangeColorArr[i]};`);
 			playSound(soundUrlArr[i]);
 			setTimeout(() => {
 				btnArr[i].setAttribute('style', `background-color: ${btnOrigColorArr[i]};`);
-			}, 800);
+			}, 500);
 		}
 	};
 
@@ -175,34 +175,37 @@ document.addEventListener("DOMContentLoaded", function() {
 	};
 
 
-	//Starts the game and plays the computer's turn once started
+	//Starts the game, plays the computer's turn once started and checks for a win
 	var playGame = () => {
 		counter = 0;
-		// if (!playing) {
-		// 	playing = true
-
-
-			if (!isPlayerTurn && !wrong) {
-				pushRandomInt(getRandomInt(0, 3));
-				for (i = 0; i < gameOrderArr.length; i++) {
-					btnActive(i);
-				};
-				setTimeout(() => {
-					isPlayerTurn = true;
-				}, 1000 * gameOrderArr.length);
-				score.textContent = gameOrderArr.length;
-			} else if (!isPlayerTurn && wrong) {
-				for (i = 0; i < gameOrderArr.length; i++) {
-					btnActive(i);
-				};
-				setTimeout(() => {
-					isPlayerTurn = true;
-				}, 1000 * gameOrderArr.length);
-				score.textContent = gameOrderArr.length;
-				wrong = false;
-			}
-			playerArr = [];
-		// }
+		if (gameOrderArr.length === 20) {
+			isPlayerTurn = true;
+			score.textContent = 'win';
+			setTimeout(() => {
+				restartGame();
+			}, 3000);
+			return;
+		}
+		if (!isPlayerTurn && !wrong) {
+			pushRandomInt(getRandomInt(0, 3));
+			for (i = 0; i < gameOrderArr.length; i++) {
+				btnActive(i);
+			};
+			setTimeout(() => {
+				isPlayerTurn = true;
+			}, 700 * gameOrderArr.length);
+			score.textContent = gameOrderArr.length;
+		} else if (!isPlayerTurn && wrong) {
+			for (i = 0; i < gameOrderArr.length; i++) {
+				btnActive(i);
+			};
+			setTimeout(() => {
+				isPlayerTurn = true;
+			}, 700 * gameOrderArr.length);
+			score.textContent = gameOrderArr.length;
+			wrong = false;
+		}
+		playerArr = [];
 	};
 
 	startClickEvent();
