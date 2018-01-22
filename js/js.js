@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	//Starts the game, plays the computer's turn once started and checks for a win
 	var playGame = () => {
 		counter = 0;
-		if (gameOrderArr.length === 5) {
+		if (gameOrderArr.length === 20) {
 			isPlayerTurn = true;
 			score.textContent = 'win';
 			setTimeout(() => {
