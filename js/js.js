@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	//Assigns click event listener to start
 	var startClickEvent = () => {
-		start.addEventListener('click', playGame);
+		start.addEventListener('click', startGame);
 		restart.addEventListener('click', restartGame);
 		strict.addEventListener('click', strictModeToggler);
 		assignClickEvent();
@@ -65,17 +65,45 @@ document.addEventListener("DOMContentLoaded", function() {
 	};
 
 
+	//Starts the game
+	var startGame = () => {
+		if (!playing) {
+			playGame();
+		}
+		playing = true;
+	}
+
+
+	//Restarts the game
+	var restartGame = () => {
+		if (isPlayerTurn) {
+			isPlayerTurn = false;
+			wrong = false;
+			playing = false;
+			counter = 0;
+			gameOrderArr = [];
+			playerArr = [];
+			score.textContent = '--';
+			setTimeout(() => {
+				playGame();
+			}, 1000);
+		}
+	};
+
+
 	//Toggles strict mode on/off
 	var strictModeToggler = () => {
-		if (!strictModeOn) {
-			strictModeOn = true;
-			strict.style.background = btnOrigColorArr[0];
-		} else {
-			strictModeOn = false;
-			strict.style.background = btnOrigColorArr[1];
+		if (isPlayerTurn || !playing) {
+			if (!strictModeOn) {
+				strictModeOn = true;
+				strict.style.background = btnOrigColorArr[0];
+			} else if (strictModeOn) {
+				strictModeOn = false;
+				strict.style.background = btnOrigColorArr[1];
+			}
+			restartGame();
 		}
-		restartGame();
-	}
+	};
 
 
 	//Plays sound
@@ -85,14 +113,17 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 
-	//Checks if player is correct, if wrong computer replays last series
+	//Checks if correct, if wrong computer replays last series or restarts if strictModeOn = true
 	var checkAnswer = () => {
 		let gameOrderCheck = gameOrderArr[counter];
 		let playerOrderCheck = playerArr[counter];
 		if (gameOrderCheck !== playerOrderCheck) {
 			score.textContent = 'X';
-			isPlayerTurn = false;
 			wrong = true;
+			if (strictModeOn) {
+				restartGame();
+			}
+			isPlayerTurn = false;
 		} else {
 			wrong = false;			
 		}
@@ -147,35 +178,32 @@ document.addEventListener("DOMContentLoaded", function() {
 	//Starts the game and plays the computer's turn once started
 	var playGame = () => {
 		counter = 0;
-		if (!isPlayerTurn && !wrong) {
-			pushRandomInt(getRandomInt(0, 3));
-			for (i = 0; i < gameOrderArr.length; i++) {
-				btnActive(i);
-			};
-			isPlayerTurn = true;
-			score.textContent = gameOrderArr.length;
-		} else if (!isPlayerTurn && wrong) {
-			for (i = 0; i < gameOrderArr.length; i++) {
-				btnActive(i);
-			};
-			isPlayerTurn = true;
-			score.textContent = gameOrderArr.length;
-			wrong = false;
-		}
-		playerArr = [];
+		// if (!playing) {
+		// 	playing = true
+
+
+			if (!isPlayerTurn && !wrong) {
+				pushRandomInt(getRandomInt(0, 3));
+				for (i = 0; i < gameOrderArr.length; i++) {
+					btnActive(i);
+				};
+				setTimeout(() => {
+					isPlayerTurn = true;
+				}, 1000 * gameOrderArr.length);
+				score.textContent = gameOrderArr.length;
+			} else if (!isPlayerTurn && wrong) {
+				for (i = 0; i < gameOrderArr.length; i++) {
+					btnActive(i);
+				};
+				setTimeout(() => {
+					isPlayerTurn = true;
+				}, 1000 * gameOrderArr.length);
+				score.textContent = gameOrderArr.length;
+				wrong = false;
+			}
+			playerArr = [];
+		// }
 	};
-
-
-	//Restarts the game
-	var restartGame = () => {
-		isPlayerTurn = false;
-		wrong = false;
-		counter = 0;
-		strictModeOn = false;
-		gameOrderArr = [];
-		playerArr = [];
-		playGame();
-	}
 
 	startClickEvent();
 });
