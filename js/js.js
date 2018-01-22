@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	let strictModeOn = false;
 	let playing = false;
 	let sound = new Audio();
+	let playerArr = [];
+	let counter = 0;
 
 	const gameOrderArr = [];
 	const btnArr = [greenBtn, redBtn, yellowBtn, blueBtn];
@@ -79,6 +81,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 
+	//Checks if player is correct, if wrong computer replays last series
+	var checkAnswer = () => {
+		let gameOrderCheck = gameOrderArr[counter];
+		let playerOrderCheck = playerArr[counter];
+		if (gameOrderCheck !== playerOrderCheck) {
+			score.textContent = 'X';
+			isPlayerTurn = false;
+			wrong = true;
+		} else {
+			wrong = false;			
+		}
+		counter++;
+	};
+
+
 	//Changes color, calls playSound() then returns to original color of selected playBtn
 	var btnActive = (i) => {
 		if (!isPlayerTurn) {
@@ -91,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				}, 800);
 			}, 1000 * i);
 		} else {
+			// checkAnswer(i);
+
 			btnArr[i].setAttribute('style', `background-color: ${btnChangeColorArr[i]};`);
 			playSound(soundUrlArr[i]);
 
@@ -101,38 +120,49 @@ document.addEventListener("DOMContentLoaded", function() {
 	};
 
 
+	//Click event handler for the player's turn
 	function playerTurn() {
 		if (isPlayerTurn) {
 			let btnId = this.id;
 			let btnEl = btnObject[btnId];
 			let btnIndex = btnArr.indexOf(btnEl);
 			btnActive(btnIndex);
-
-
-			console.log('btnId: ' + btnId);
-			console.log('btnEl: ' + btnEl);
-			console.log('btnIndex: ' + btnIndex);
-			// isPlayerTurn = false;
+			playerArr.push(btnIndex);
+			checkAnswer();
+			if (wrong) {
+				isPlayerTurn = false;
+				setTimeout(() => {
+					playGame();
+				}, 1300);
+			} else if (gameOrderArr.length === counter) {
+				isPlayerTurn = false;				
+				setTimeout(() => {
+					playGame();
+				}, 1300);
+			}
 		}
 	};
 
 
 	var playGame = () => {
-		pushRandomInt(getRandomInt(0, 3));
-		console.log(`gameOrderArr: ${gameOrderArr}`);
-
-		if (!playing && !isPlayerTurn) {
+		counter = 0;
+		if (!isPlayerTurn && !wrong) {
+			pushRandomInt(getRandomInt(0, 3));
 			for (i = 0; i < gameOrderArr.length; i++) {
 				btnActive(i);
 			};
-
-			playing = true;
 			isPlayerTurn = true;
 			score.textContent = gameOrderArr.length;
-		} 
+		} else if (!isPlayerTurn && wrong) {
+			for (i = 0; i < gameOrderArr.length; i++) {
+				btnActive(i);
+			};
+			isPlayerTurn = true;
+			score.textContent = gameOrderArr.length;
+			wrong = false;
+		}
+		playerArr = [];
+		console.log('isPlayerTurn: ' + isPlayerTurn);
 	};
-
 	startClickEvent();
-	// console.log(playBtns);
-	// console.log(`: ${}`);
 });
