@@ -16,15 +16,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	let playing = false;
 	let sound = new Audio();
 	let playerArr = [];
+	let gameOrderArr = [];
 	let counter = 0;
 
-	const gameOrderArr = [];
 	const btnArr = [greenBtn, redBtn, yellowBtn, blueBtn];
 	const btnOrigColorArr = ['#0FA94C', '#9A1922', '#C5AA1E', '#2A458D'];
 	const btnChangeColorArr = ['#17FF73', '#FF2938', '#FFDC27', '#4C7DFF'];
 	const soundUrlArr = [
 		'https://s3.amazonaws.com/freecodecamp/simonSound4.mp3',
-		'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3', 'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3',
+		'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3',
+		'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3',
 		'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'
 	];
 	
@@ -39,6 +40,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	//Assigns click event listener to start
 	var startClickEvent = () => {
 		start.addEventListener('click', playGame);
+		restart.addEventListener('click', restartGame);
+		strict.addEventListener('click', strictModeToggler);
 		assignClickEvent();
 	}
 
@@ -63,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 	//Toggles strict mode on/off
-	var strictModeToggle = () => {
+	var strictModeToggler = () => {
 		if (!strictModeOn) {
 			strictModeOn = true;
 			strict.style.background = btnOrigColorArr[0];
@@ -71,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			strictModeOn = false;
 			strict.style.background = btnOrigColorArr[1];
 		}
+		restartGame();
 	}
 
 
@@ -102,17 +106,13 @@ document.addEventListener("DOMContentLoaded", function() {
 			setTimeout(() => {				
 				btnArr[gameOrderArr[i]].setAttribute('style', `background-color: ${btnChangeColorArr[gameOrderArr[i]]};`);
 				playSound(soundUrlArr[gameOrderArr[i]]);
-
 				setTimeout(() => {
 					btnArr[gameOrderArr[i]].setAttribute('style', `background-color: ${btnOrigColorArr[gameOrderArr[i]]};`);
 				}, 800);
 			}, 1000 * i);
 		} else {
-			// checkAnswer(i);
-
 			btnArr[i].setAttribute('style', `background-color: ${btnChangeColorArr[i]};`);
 			playSound(soundUrlArr[i]);
-
 			setTimeout(() => {
 				btnArr[i].setAttribute('style', `background-color: ${btnOrigColorArr[i]};`);
 			}, 800);
@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	};
 
 
+	//Starts the game and plays the computer's turn once started
 	var playGame = () => {
 		counter = 0;
 		if (!isPlayerTurn && !wrong) {
@@ -162,7 +163,19 @@ document.addEventListener("DOMContentLoaded", function() {
 			wrong = false;
 		}
 		playerArr = [];
-		console.log('isPlayerTurn: ' + isPlayerTurn);
 	};
+
+
+	//Restarts the game
+	var restartGame = () => {
+		isPlayerTurn = false;
+		wrong = false;
+		counter = 0;
+		strictModeOn = false;
+		gameOrderArr = [];
+		playerArr = [];
+		playGame();
+	}
+
 	startClickEvent();
 });
