@@ -83,7 +83,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			counter = 0;
 			gameOrderArr = [];
 			playerArr = [];
-			score.textContent = '--';
+			if (strictModeOn) {
+				score.textContent = 'X';
+			}
 			setTimeout(() => {
 				playGame();
 			}, 1000);
@@ -120,8 +122,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		if (gameOrderCheck !== playerOrderCheck) {
 			score.textContent = 'X';
 			wrong = true;
-			if (strictModeOn) {
-				restartGame();
+			if (strictModeOn) {						
+				restartGame();			
 			}
 			isPlayerTurn = false;
 		} else {
@@ -178,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	//Starts the game, plays the computer's turn once started and checks for a win
 	var playGame = () => {
 		counter = 0;
-		if (gameOrderArr.length === 20) {
+		if (gameOrderArr.length === 5) {
 			isPlayerTurn = true;
 			score.textContent = 'win';
 			setTimeout(() => {
